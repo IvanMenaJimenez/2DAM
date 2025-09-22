@@ -16,7 +16,7 @@ public class Habitacion {
     }
 
     public void Buscar(Superviviente superviviente) {
-        System.out.println("holaa");
+     
         int numAl = (int) (Math.random() * 100 + 1);
 
         if (numAl <= 75) {
