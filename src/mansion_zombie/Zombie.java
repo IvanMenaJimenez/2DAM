@@ -18,20 +18,6 @@ public class Zombie {
         return "Zombie{" + "vida=" + vida + ", ataque=" + ataque + '}';
     }
 
-    public void setVida(int vida) {
-        this.vida = vida;
-    }
-
-    public void setAtaque(int ataque) {
-        this.ataque = ataque;
-    }
-
-    public int getVida() {
-        return vida;
-    }
-
-    public int getAtaque() {
-        return ataque;
-    }
+    
 
 }

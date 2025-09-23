@@ -4,43 +4,60 @@ import java.util.Scanner;
 
 public class Main {
 
+    boolean Combate(Superviviente superviviente, Zombie zombie) {
+
+        do {
+         zombie.vida  = (int) Math.random() * superviviente.ataque + 1;
+            System.out.println((int) Math.random() * superviviente.ataque + 1);
+            
+            
+            
+            
+        } while (superviviente.vida <= 0 || zombie.vida <= 0);
+
+        if (superviviente.vida == 0) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
     public static void main(String[] args) {
-        System.out.println("holi");
         Scanner sc = new Scanner(System.in);
         Superviviente superviviente = new Superviviente();
-        int num;
-        int habitacionDificultad = 0;
-        
+        int eleccion;
+        int dificultad = 0;
+
         System.out.println("Bienvenido a macion zombie. Elige una dificultad");
         System.out.println("1:Facil");
         System.out.println("2:Dificil");
-        
+
         do {
-            num = sc.nextInt();
-            switch (num) {
+            eleccion = sc.nextInt();
+            switch (eleccion) {
                 case 1:
                     System.out.println("Has elegido la dificultad facil");
-                    habitacionDificultad = 5;
+                    dificultad = 5;
                     break;
 
                 case 2:
                     System.out.println("Has elegido la dificultad dificil");
-                    habitacionDificultad = 10;
+                    dificultad = 10;
                     break;
 
                 default:
                     System.out.println("Introduce un numero correcto");
                     break;
             }
-        } while (num != 1 && num != 2);
+        } while (eleccion != 1 && eleccion != 2);
 
-        
-        for (int i = 1; i <= habitacionDificultad; i++) {
+        for (int i = 1; i <= dificultad; i++) {
+
             Habitacion habitacion = new Habitacion(i);
             int elecionJugador = 0;
 
             //  do {
-            
             System.out.println(superviviente);
             System.out.println("* LA HABITACIÓN " + habitacion.numHabitacion + " CONTIENE: " + habitacion.zombies.size() + " ZOMBIES");
             System.out.println(" ELIGE UNA DE LAS SIGUIENTES ACCIONES:");
@@ -59,10 +76,7 @@ public class Main {
 
                 System.out.println("4:Avanzar");
             }
-            
-            
-            
-            
+
             elecionJugador = sc.nextInt();
             if (habitacion.zombies.isEmpty() == false && elecionJugador == 1) {
 
