@@ -4,12 +4,15 @@ import java.util.Scanner;
 
 public class Main {
 
-    boolean Combate(Superviviente superviviente, Zombie zombie) {
+  static boolean Combate(Superviviente superviviente, Zombie zombie) {
 
         do {
-         zombie.vida  = (int) Math.random() * superviviente.ataque + 1;
-            System.out.println((int) Math.random() * superviviente.ataque + 1);
-            
+         zombie.vida  = zombie.vida -((int) (Math.random() * (superviviente.ataque + 1)));
+           
+            if (zombie.vida > 0) {
+                superviviente.vida -= ((int) (Math.random() * (superviviente.ataque + 1)));
+            }
+   
             
             
             
@@ -76,12 +79,13 @@ public class Main {
 
                 System.out.println("4:Avanzar");
             }
-
+            System.out.println(superviviente.ataque);
+ System.out.println((int) (Math.random() * (superviviente.ataque + 1)));
             elecionJugador = sc.nextInt();
             if (habitacion.zombies.isEmpty() == false && elecionJugador == 1) {
-
+                Combate(superviviente, (Zombie) habitacion.zombies.get(0));
             } else if (superviviente.botiquin == true && elecionJugador == 2) {
-                superviviente.UsarBotiquin();
+                //superviviente.UsarBotiquin();
             } else if (habitacion.numIntentosRest > 0 && elecionJugador == 3) {
                 habitacion.Buscar(superviviente);
             } else if (elecionJugador == 4) {
