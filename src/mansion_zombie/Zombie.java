@@ -8,8 +8,8 @@ public class Zombie {
     int ataque;
 
     public Zombie(int numsala) {
-        this.vida = ((int)(Math.random() * 2 + 1)) + 2 + (numsala -1) ;
-        this.ataque = ((int)(Math.random() * 2 + 1)) + 2 + (numsala -1) ;
+        this.vida = ((int) (Math.random() * 2 + 1)) + 2 + (numsala - 1);
+        this.ataque = ((int) (Math.random() * 2 + 1)) + 2 + (numsala - 1);
 
     }
 
@@ -17,7 +17,5 @@ public class Zombie {
     public String toString() {
         return "Zombie{" + "vida=" + vida + ", ataque=" + ataque + '}';
     }
-
-    
 
 }

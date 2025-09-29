@@ -18,11 +18,16 @@ public class Superviviente {
         this.num_protecion = 0;
     }
 
-    
-
     @Override
     public String toString() {
         return "Superviviente{" + "maxvida=" + maxvida + ", vida=" + vida + ", ataque=" + ataque + ", num_armas=" + num_armas + ", botiquin=" + botiquin + ", num_protecion=" + num_protecion + '}';
     }
 
+    public void UsarBotiquin() {
+        botiquin = false;
+
+        if ((vida += 4) > maxvida) {
+            vida = maxvida;
+        }
+    }
 }

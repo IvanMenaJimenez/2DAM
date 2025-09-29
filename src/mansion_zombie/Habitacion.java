@@ -16,13 +16,13 @@ public class Habitacion {
     }
 
     public void Buscar(Superviviente superviviente) {
-     
+
         int numAl = (int) (Math.random() * 100 + 1);
 
         if (numAl <= 75) {
             numAl = (int) (Math.random() * 100 + 1);
-            
-            if ( numAl <= 40) {
+
+            if (numAl <= 40) {
 
             } else if (numAl > 40 && numAl <= 80) {
                 añadirZombies(1);
@@ -41,7 +41,7 @@ public class Habitacion {
         } else if (numAl > 95 && numAl <= 100) {
             superviviente.num_armas = superviviente.num_armas + 1;
         }
-
+        numIntentosRest--;
     }
 
     public void añadirZombies(int num) {
