@@ -3,7 +3,6 @@ package mansion_zombie;
 import java.util.Random;
 
 public class Zombie {
-
     int vida;
     int ataque;
 
@@ -15,7 +14,7 @@ public class Zombie {
 
     @Override
     public String toString() {
-        return "Zombie{" + "vida=" + vida + ", ataque=" + ataque + '}';
+        return "VIDA = " + vida + " ATAQUE " + ataque;
     }
 
 }

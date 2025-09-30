@@ -2,32 +2,34 @@ package mansion_zombie;
 
 public class Superviviente {
 
-    final int maxvida;
+    final int maxVida;
     int vida;
     int ataque;
-    int num_armas;
+    int numArmas;
     boolean botiquin;
-    int num_protecion;
+    int numProtecion;
 
     public Superviviente() {
-        this.maxvida = 20;
+        this.maxVida = 20;
         this.vida = 20;
         this.ataque = 4;
-        this.num_armas = 0;
+        this.numArmas = 0;
         this.botiquin = false;
-        this.num_protecion = 0;
+        this.numProtecion = 0;
+    }
+    
+    //METODO QUE CONVIERTE EL ATRIBUTO BOTIQUIN A FALSE Y SUMA CUATRO A LA VIDA
+    //SI ESTA ES SUPERIOR AL ATRIBUTO VIDA MAXIMA    
+    public void UsarBotiquin() {
+        botiquin = false;
+
+        if ((vida += 4) > maxVida) {
+            vida = maxVida;
+        }
     }
 
     @Override
     public String toString() {
-        return "Superviviente{" + "maxvida=" + maxvida + ", vida=" + vida + ", ataque=" + ataque + ", num_armas=" + num_armas + ", botiquin=" + botiquin + ", num_protecion=" + num_protecion + '}';
-    }
-
-    public void UsarBotiquin() {
-        botiquin = false;
-
-        if ((vida += 4) > maxvida) {
-            vida = maxvida;
-        }
+        return "VIDA = " + vida + " ATAQUE = " + ataque + " ARMAS = " + numArmas + " PROTECCIONES = " + numProtecion + " BOTIQUINES = " + botiquin;
     }
 }
