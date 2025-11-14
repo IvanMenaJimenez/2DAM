@@ -4,40 +4,35 @@ import java.util.Scanner;
 
 public class Main {
 
-    static public int ElegirDificultad(Scanner sc) {
-        int eleccion;
+    int habitacionActual;
+    int habitacionMax = 1;
+
+    Superviviente superviviente = new Superviviente();
+
+    public int ElegirDificultad(String eleccion) {
         int dificultad = 0;
 
-        System.out.println("BIENVENIDO A MANSION ZOMBIE. ELIGE UNA DIFICULTAD");
-        System.out.println("1:FACIL");
-        System.out.println("2:DIFICIL");
+        switch (eleccion) {
+            case "Facil":
+                System.out.println("HAS ELEGIDO LA DIFILCULTAD FACIL");
+                habitacionActual = 5;
+                break;
 
-        do {
+            case "Normal":
+                System.out.println("HAS ELEGIDO LA DIFILCULTAD DIFICIL");
+                habitacionActual = 10;
+                break;
 
-            eleccion = sc.nextInt();
-
-            switch (eleccion) {
-                case 1:
-                    System.out.println("HAS ELEGIDO LA DIFILCULTAD FACIL");
-                    dificultad = 5;
-                    break;
-
-                case 2:
-                    System.out.println("HAS ELEGIDO LA DIFILCULTAD DIFICIL");
-                    dificultad = 10;
-                    break;
-
-                default:
-                    System.out.println("Introduce un numero correcto");
-                    break;
-            }
-
-        } while (eleccion != 1 && eleccion != 2);
+            case "Dificil":
+                System.out.println("HAS ELEGIDO LA DIFILCULTAD DIFICIL");
+                habitacionActual = 10;
+                break;
+        }
 
         return dificultad;
     }
 
-    static public void MostrarAccionesDisponibles(Habitacion habitacion, Superviviente superviviente) {
+    public void MostrarAccionesDisponibles(Habitacion habitacion, Superviviente superviviente) {
 
         if (habitacion.zombies.isEmpty() == false) {
             System.out.println("1:Pelear");
@@ -55,7 +50,7 @@ public class Main {
         }
     }
 
-    static public void ElegirAccion(int elecionJugador, Habitacion habitacion, Superviviente superviviente) {
+    public void ElegirAccion(int elecionJugador, Habitacion habitacion, Superviviente superviviente) {
 
         if (habitacion.zombies.isEmpty() == false && elecionJugador == 1) {
             Combate(superviviente, habitacion);
@@ -74,12 +69,12 @@ public class Main {
         }
     }
 
-    static void Combate(Superviviente superviviente, Habitacion habitacion) {
+    void Combate(Superviviente superviviente, Habitacion habitacion) {
         Zombie zombie = (Zombie) habitacion.zombies.get(0);
         int dañoZombie;
         int dañoSuperviviente;
 
-        do {
+
 
             dañoSuperviviente = ((int) (Math.random() * (superviviente.ataque + 1))) + superviviente.num_armas;
             zombie.vida = zombie.vida - dañoSuperviviente;
@@ -95,35 +90,34 @@ public class Main {
 
             }
 
-        } while (superviviente.vida >= 0 && zombie.vida >= 0);
-
         if (zombie.vida <= 0) {
             habitacion.zombies.remove(0);
         }
+        
     }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Superviviente superviviente = new Superviviente();
+        Main a = new Main();
 
-        for (int i = 1; i <= (ElegirDificultad(sc)); i++) {
+        for (int i = 1; i <= (a.numeroHabitacion); i++) {
 
             Habitacion habitacion = new Habitacion(i);
             int elecionJugador = 0;
 
             do {
                 System.out.println("* LA HABITACION " + habitacion.numHabitacion + " CONTIENE: " + habitacion.zombies.size() + " ZOMBIES");
-                System.out.println(superviviente);
+                System.out.println(a.superviviente);
                 System.out.println(" ELIGE UNA DE LAS SIGUIENTES ACCIONES:");
 
-                MostrarAccionesDisponibles(habitacion, superviviente);
+                a.MostrarAccionesDisponibles(habitacion, a.superviviente);
 
                 elecionJugador = sc.nextInt();
-                ElegirAccion(elecionJugador, habitacion, superviviente);
+                a.ElegirAccion(elecionJugador, habitacion, a.superviviente);
 
-            } while (elecionJugador != 4 && superviviente.vida > 0);
+            } while (elecionJugador != 4 && a.superviviente.vida > 0);
 
-            if (superviviente.vida > 0) {
+            if (a.superviviente.vida > 0) {
 
             } else {
                 System.out.println("HAS MUERTO");
@@ -133,5 +127,4 @@ public class Main {
         }
 
     }
-
 }

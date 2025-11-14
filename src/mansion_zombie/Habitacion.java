@@ -44,6 +44,18 @@ public class Habitacion {
         numIntentosRest--;
     }
 
+    public ArrayList getZombies() {
+        return zombies;
+    }
+
+    public int getNumHabitacion() {
+        return numHabitacion;
+    }
+
+    public int getNumIntentosRest() {
+        return numIntentosRest;
+    }
+
     public void añadirZombies(int num) {
         for (int i = 0; i < num; i++) {
             zombies.add(new Zombie(numHabitacion));

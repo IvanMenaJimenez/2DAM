@@ -18,6 +18,8 @@ public class Superviviente {
         this.num_protecion = 0;
     }
 
+
+
     @Override
     public String toString() {
         return "Superviviente{" + "maxvida=" + maxvida + ", vida=" + vida + ", ataque=" + ataque + ", num_armas=" + num_armas + ", botiquin=" + botiquin + ", num_protecion=" + num_protecion + '}';
@@ -29,5 +31,30 @@ public class Superviviente {
         if ((vida += 4) > maxvida) {
             vida = maxvida;
         }
+    }
+    
+    
+        public int getMaxvida() {
+        return maxvida;
+    }
+
+    public int getVida() {
+        return vida;
+    }
+
+    public int getAtaque() {
+        return ataque;
+    }
+
+    public int getNum_armas() {
+        return num_armas;
+    }
+
+    public boolean isBotiquin() {
+        return botiquin;
+    }
+
+    public int getNum_protecion() {
+        return num_protecion;
     }
 }
