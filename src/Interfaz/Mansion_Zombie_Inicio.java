@@ -48,7 +48,7 @@ public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
         ButtonVerHistorial.setText("Ver Historico");
         ButtonVerHistorial.setName("Ver historico"); // NOI18N
 
-        ComboBoxSeleccionarDificultad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Facil", "Medio", "Dificil" }));
+        ComboBoxSeleccionarDificultad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Facil", "Normal", "Dificil" }));
         ComboBoxSeleccionarDificultad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ComboBoxSeleccionarDificultadActionPerformed(evt);
@@ -60,7 +60,7 @@ public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(200, Short.MAX_VALUE)
+                .addContainerGap(198, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(ButtonJugar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(ButtonCargarPartida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -88,7 +88,7 @@ public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
 
     private void ButtonJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonJugarActionPerformed
         juego.iniciarJuego((String) ComboBoxSeleccionarDificultad.getSelectedItem());
-        Accion accion = new Accion(this, true , juego);
+        Accion accion = new Accion(this, true, juego);
         accion.setVisible(true);
     }//GEN-LAST:event_ButtonJugarActionPerformed
 

@@ -12,55 +12,63 @@ public class Juego {
 
     Superviviente superviviente = new Superviviente();
     public Habitacion habitacion;
-
-    
-    int habitacionActual;
+    int habitacionActual = 0;
     int habitacionMax;
 
     public void ElegirDificultad(String eleccion) {
         switch (eleccion) {
             case "Facil":
-                habitacionActual = 5;
+                habitacionMax = 5;
                 break;
 
             case "Normal":
-                habitacionActual = 10;
+                habitacionMax = 10;
                 break;
 
             case "Dificil":
-                habitacionActual = 10;
+                habitacionMax = 10;
                 break;
         }
     }
-    
+
+    public void avanzar() {
+        habitacionActual++;
+        if (habitacionActual < habitacionMax) {
+            habitacion = new Habitacion(habitacionActual);
+        }
+    }
 
     public void iniciarJuego(String dificultad) {
         ElegirDificultad(dificultad);
         avanzar();
     }
 
-    public void avanzar() {
-        habitacionActual++;
-        if (habitacionActual >= habitacionMax) {
+    public String Combate() {
+        Zombie zombie = (Zombie) habitacion.zombies.get(0);
+        int dañoZombie = 0;
+        int dañoSuperviviente;
 
-        } else {
-            habitacion = new Habitacion(habitacionActual);
+        dañoSuperviviente = ((int) (Math.random() * (superviviente.ataque + 1))) + superviviente.num_armas;
+        zombie.vida = zombie.vida - dañoSuperviviente;
+
+        System.out.println("HAS HECHO " + dañoSuperviviente + " DE DAÑOS");
+
+        if (zombie.vida > 0) {
+
+            dañoZombie = ((int) (Math.random() * (zombie.ataque + 1))) - superviviente.num_protecion;
+            superviviente.vida -= dañoZombie;
+
+            System.out.println("TE HAN HECHO " + dañoZombie + " DE DAÑOS");
+
         }
 
+        if (zombie.vida <= 0) {
+            habitacion.zombies.remove(0);
+        }
+
+        return ("TE HAN HECHO " + dañoZombie + " DE DAÑOS \n " + "HAS HECHO " + dañoSuperviviente + " DE DAÑOS");
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     public Superviviente getSuperviviente() {
         return superviviente;
     }

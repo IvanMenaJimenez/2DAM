@@ -15,33 +15,33 @@ public class Habitacion {
 
     }
 
-    public void Buscar(Superviviente superviviente) {
-
+    public String Buscar(Superviviente superviviente) {
+        numIntentosRest--;
         int numAl = (int) (Math.random() * 100 + 1);
 
         if (numAl <= 75) {
+            //EL USUARIO HA HECHO RUIDO SE GENERA OTRO NUMERO
             numAl = (int) (Math.random() * 100 + 1);
 
-            if (numAl <= 40) {
-
-            } else if (numAl > 40 && numAl <= 80) {
+            if (numAl > 40 && numAl <= 80) {
                 añadirZombies(1);
-
+                return "HAS HECHO RUIDO HAS ATRAIDO A UN ZOMBIE";
             } else if (numAl > 80 && numAl <= 100) {
                 añadirZombies(2);
-
+                return "HAS HECHO RUIDO HAS ATRAIDO A DOS ZOMBIE";
             }
 
         } else if (numAl > 75 && numAl <= 90) {
             superviviente.botiquin = true;
-
+             return "HAS ENCONTADO UN BOTIQUIN";
         } else if (numAl > 90 && numAl <= 95) {
-            superviviente.num_protecion = superviviente.num_protecion + 1;
-
+            superviviente.num_protecion++;
+            return "HAS ENCONTADO UNA PROTECCION";
         } else if (numAl > 95 && numAl <= 100) {
-            superviviente.num_armas = superviviente.num_armas + 1;
+            superviviente.num_armas++;
+            return "HAS ENCONTADO UNA ARMA";
         }
-        numIntentosRest--;
+        return "NO HAS ENCONTADO NADA";
     }
 
     public ArrayList getZombies() {

@@ -18,4 +18,11 @@ public class Zombie {
         return "Zombie{" + "vida=" + vida + ", ataque=" + ataque + '}';
     }
 
+    public int getVida() {
+        return vida;
+    }
+
+    public int getAtaque() {
+        return ataque;
+    }
 }
