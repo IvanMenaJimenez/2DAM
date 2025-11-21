@@ -4,6 +4,8 @@
  */
 package Interfaz;
 
+import java.awt.Image;
+import javax.swing.JOptionPane;
 import mansion_zombie.*;
 
 /**
@@ -17,8 +19,13 @@ public class Combate extends javax.swing.JDialog {
 
     public Combate(java.awt.Frame parent, boolean modal, Juego juego) {
         super(parent, modal);
-        initComponents();
         this.juego = juego;
+        
+        
+        Image fondo = Mansion_Zombie_Inicio.FondoUtil.cargarImagen("/Interfaz/img/fondo_Combate.jpg", "D:\\ruta_absoluta\\fondo_inicio.png");
+        setContentPane(new Mansion_Zombie_Inicio.FondoUtil.FondoPanel(fondo));
+        
+        initComponents();
         mostrarAtributos();
     }
 
@@ -51,6 +58,7 @@ public class Combate extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        TextAreaCombate.setEditable(false);
         TextAreaCombate.setColumns(20);
         TextAreaCombate.setRows(5);
         jScrollPane1.setViewportView(TextAreaCombate);
@@ -155,7 +163,7 @@ public class Combate extends javax.swing.JDialog {
 
     private void buttonAtacarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAtacarActionPerformed
         if (juego.getSuperviviente().getVida() <= 0) {
-            javax.swing.JOptionPane.showMessageDialog(this, "HAS PERDIDO :(");
+         JOptionPane.showMessageDialog(this, "HAS PERDIDO :(");
             System.exit(0);
 
         } else if (juego.getHabitacion().getZombies().isEmpty()) {
@@ -165,43 +173,6 @@ public class Combate extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_buttonAtacarActionPerformed
-
-//    /**
-//     * @param args the command line arguments
-//     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-//            logger.log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the dialog */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                Combate dialog = new Combate(new javax.swing.JFrame(), true ,new Juego);
-//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-//                    @Override
-//                    public void windowClosing(java.awt.event.WindowEvent e) {
-//                        System.exit(0);
-//                    }
-//                });
-//                dialog.setVisible(true);
-//            }
-//        });
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea TextAreaCombate;

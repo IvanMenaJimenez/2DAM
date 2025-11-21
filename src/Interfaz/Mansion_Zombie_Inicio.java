@@ -4,23 +4,28 @@
  */
 package Interfaz;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
 import mansion_zombie.Habitacion;
 import mansion_zombie.Juego;
 import mansion_zombie.Main;
 import mansion_zombie.Superviviente;
 
-/**
- *
- * @author ivan.menjim
- */
 public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Mansion_Zombie_Inicio.class.getName());
     Juego juego = new Juego();
+   
 
     public Mansion_Zombie_Inicio() {
+        Image fondo = FondoUtil.cargarImagen("/Interfaz/img/fondo_inicio.png","D:\\ruta_absoluta\\fondo_inicio.png");
+        setContentPane(new FondoUtil.FondoPanel(fondo));
+        
         initComponents();
+
     }
 
     @SuppressWarnings("unchecked")
@@ -87,7 +92,8 @@ public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ButtonJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonJugarActionPerformed
-        juego.iniciarJuego((String) ComboBoxSeleccionarDificultad.getSelectedItem());
+
+        juego.iniciarJuego((String) this.ComboBoxSeleccionarDificultad.getSelectedItem());
         Accion accion = new Accion(this, true, juego);
         accion.setVisible(true);
     }//GEN-LAST:event_ButtonJugarActionPerformed
@@ -95,6 +101,35 @@ public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
     private void ComboBoxSeleccionarDificultadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBoxSeleccionarDificultadActionPerformed
 
     }//GEN-LAST:event_ComboBoxSeleccionarDificultadActionPerformed
+
+    public class FondoUtil {
+
+        public static Image cargarImagen(String rutaInterna, String rutaAbsoluta) {
+            try {
+                return new ImageIcon(
+                        FondoUtil.class.getResource(rutaInterna)
+                ).getImage();
+            } catch (Exception e) {
+                return new ImageIcon(rutaAbsoluta).getImage();
+            }
+        }
+
+        public static class FondoPanel extends JPanel {
+
+            private Image imagen;
+
+            public FondoPanel(Image imagen) {
+                this.imagen = imagen;
+            }
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
+            }
+        }
+
+    }
 
     /**
      * @param args the command line arguments
@@ -127,4 +162,5 @@ public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
     private javax.swing.JButton ButtonVerHistorial;
     private javax.swing.JComboBox<String> ComboBoxSeleccionarDificultad;
     // End of variables declaration//GEN-END:variables
+
 }

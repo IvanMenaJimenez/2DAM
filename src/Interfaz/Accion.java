@@ -4,6 +4,7 @@
  */
 package Interfaz;
 
+import java.awt.Image;
 import mansion_zombie.Habitacion;
 import mansion_zombie.Juego;
 import mansion_zombie.Superviviente;
@@ -18,10 +19,17 @@ public class Accion extends javax.swing.JDialog {
     java.awt.Frame parent;
     Juego juego;
 
+   
     public Accion(java.awt.Frame parent, boolean modal, Juego juego) {
+        
 
         super(parent, modal);
         this.juego = juego;
+        this.parent = parent;
+        
+        
+        Image fondo = Mansion_Zombie_Inicio.FondoUtil.cargarImagen("/Interfaz/img/fondo_Accion.png", "D:\\ruta_absoluta\\fondo_inicio.png");
+        setContentPane(new Mansion_Zombie_Inicio.FondoUtil.FondoPanel(fondo));
         initComponents();
 
         mostrarAccionesDisponibles();
@@ -29,7 +37,11 @@ public class Accion extends javax.swing.JDialog {
 
     }
 
-    
+    public void actulizarParametros() {
+        mostrarAccionesDisponibles();
+        mostrarAtributosJugador();
+    }
+
     public void mostrarAccionesDisponibles() {
         ButtonAvanza.setEnabled(true);
         ButtonBuscar.setEnabled(true);
@@ -48,7 +60,6 @@ public class Accion extends javax.swing.JDialog {
             }
 
         } else {
-
             ButtonAvanza.setEnabled(false);
             ButtonBuscar.setEnabled(false);
             ButtonCurarse.setEnabled(false);
@@ -58,12 +69,19 @@ public class Accion extends javax.swing.JDialog {
 
     public void mostrarAtributosJugador() {
         labelVida.setText(Integer.toString(juego.getSuperviviente().getVida()));
+
         labelProtecciones.setText(Integer.toString(juego.getSuperviviente().getNum_protecion()));
+
         labelArmas.setText(Integer.toString(juego.getSuperviviente().getNum_armas()));
+
         labelBotiquin.setText(Boolean.toString(juego.getSuperviviente().isBotiquin()));
+
         labelBusqueda.setText(Integer.toString(juego.getHabitacion().getNumIntentosRest()));
+
         jLabel7.setText("Habitacion {Max " + juego.getHabitacionMax() + "}");
+
         labelHabitacion.setText(Integer.toString(juego.getHabitacionActual()));
+
         labelZombies.setText(Integer.toString(juego.getHabitacion().getZombies().size()));
     }
 
@@ -257,20 +275,17 @@ public class Accion extends javax.swing.JDialog {
     private void ButtonLucharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonLucharActionPerformed
         Combate combate = new Combate(parent, true, juego);
         combate.setVisible(true);
-        mostrarAccionesDisponibles();
-        mostrarAtributosJugador();
+        actulizarParametros();
     }//GEN-LAST:event_ButtonLucharActionPerformed
 
     private void ButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonBuscarActionPerformed
         javax.swing.JOptionPane.showMessageDialog(this, juego.getHabitacion().Buscar(juego.getSuperviviente()));
-        mostrarAtributosJugador();
-        mostrarAccionesDisponibles();
+        actulizarParametros();
     }//GEN-LAST:event_ButtonBuscarActionPerformed
 
     private void ButtonCurarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCurarseActionPerformed
         javax.swing.JOptionPane.showMessageDialog(this, "TE HAS CURADO " + Integer.toString(juego.getSuperviviente().UsarBotiquin()));
-        mostrarAtributosJugador();
-        mostrarAccionesDisponibles();
+        actulizarParametros();
     }//GEN-LAST:event_ButtonCurarseActionPerformed
 
     private void ButtonAvanzaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAvanzaActionPerformed
@@ -280,8 +295,7 @@ public class Accion extends javax.swing.JDialog {
         } else {
             juego.avanzar();
             javax.swing.JOptionPane.showMessageDialog(this, "HAS AVANZADO A LA SALA " + juego.getHabitacionActual());
-            mostrarAtributosJugador();
-            mostrarAccionesDisponibles();
+            actulizarParametros();
         }
     }//GEN-LAST:event_ButtonAvanzaActionPerformed
 

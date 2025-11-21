@@ -44,29 +44,25 @@ public class Juego {
     }
 
     public String Combate() {
-        Zombie zombie = (Zombie) habitacion.zombies.get(0);
+        String resultado = "";
         int dañoZombie = 0;
         int dañoSuperviviente;
+        Zombie zombie = (Zombie) habitacion.zombies.get(0);
 
         dañoSuperviviente = ((int) (Math.random() * (superviviente.ataque + 1))) + superviviente.num_armas;
-        zombie.vida = zombie.vida - dañoSuperviviente;
-
-        System.out.println("HAS HECHO " + dañoSuperviviente + " DE DAÑOS");
+        zombie.vida -= dañoSuperviviente;
+        resultado += ("HAS HECHO" + dañoSuperviviente + " DE DAÑO \n");
 
         if (zombie.vida > 0) {
-
             dañoZombie = ((int) (Math.random() * (zombie.ataque + 1))) - superviviente.num_protecion;
             superviviente.vida -= dañoZombie;
-
-            System.out.println("TE HAN HECHO " + dañoZombie + " DE DAÑOS");
-
-        }
-
-        if (zombie.vida <= 0) {
+            resultado += ("TE HAN HECHO " + dañoZombie + " DE DAÑO \n");
+        } else {
             habitacion.zombies.remove(0);
+            resultado += ("HAS MATADO AL ZOMBIE");
         }
 
-        return ("TE HAN HECHO " + dañoZombie + " DE DAÑOS \n " + "HAS HECHO " + dañoSuperviviente + " DE DAÑOS");
+        return resultado;
     }
 
     public Superviviente getSuperviviente() {
