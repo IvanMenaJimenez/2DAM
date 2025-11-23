@@ -1,40 +1,44 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package Interfaz;
 
 import java.awt.Image;
 import javax.swing.JOptionPane;
 import mansion_zombie.*;
 
-/**
- *
- * @author ivan.menjim
- */
 public class Combate extends javax.swing.JDialog {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Combate.class.getName());
-    Juego juego;
+    private Juego juego;
+    private int ronda = 1;
+    private boolean zombieMuerto = false;
 
     public Combate(java.awt.Frame parent, boolean modal, Juego juego) {
+        //guardamos los atributos que se le pasan al JDialog 
         super(parent, modal);
         this.juego = juego;
-        
-        
-        Image fondo = Mansion_Zombie_Inicio.FondoUtil.cargarImagen("/Interfaz/img/fondo_Combate.jpg", "D:\\ruta_absoluta\\fondo_inicio.png");
-        setContentPane(new Mansion_Zombie_Inicio.FondoUtil.FondoPanel(fondo));
-        
+
+        // Cargar imagen de fondo del menú principal
+        Image fondo = Mansion_Zombie_Inicio.Fondo.cargarImagen("/Interfaz/img/fondo_Combate.png");
+        setContentPane(new Mansion_Zombie_Inicio.Fondo.FondoPanel(fondo));
+
+        //iniciamos los componentes y actualizamos los labels
         initComponents();
         mostrarAtributos();
     }
 
     public void mostrarAtributos() {
+        //cambiamos los labels relacionado con el superviviente
         labelVidaSuperviviente.setText(Integer.toString(juego.getSuperviviente().getVida()));
         labelAtaqueSuperviviente.setText(Integer.toString(juego.getSuperviviente().getAtaque() + juego.getSuperviviente().getNum_armas()));
 
-        labelVidaZombie.setText(Integer.toString(((Zombie) juego.getHabitacion().getZombies().getFirst()).getVida()));
-        labelAtaqueZombie.setText(Integer.toString(((Zombie) juego.getHabitacion().getZombies().getFirst()).getAtaque()));
+        //cambiamos los labels relacionado con el Zombie, si el zombie esta muerto los atributos seran 0
+        if (!juego.getHabitacion().getZombies().isEmpty()) {
+            labelVidaZombie.setText(Integer.toString(((Zombie) juego.getHabitacion().getZombies().getFirst()).getVida()));
+            labelAtaqueZombie.setText(Integer.toString(((Zombie) juego.getHabitacion().getZombies().getFirst()).getAtaque()));
+        } else {
+            labelVidaZombie.setText("0");
+            labelAtaqueZombie.setText("0");
+        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -127,7 +131,7 @@ public class Combate extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(40, 40, 40)
                 .addComponent(buttonAtacar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -152,26 +156,42 @@ public class Combate extends javax.swing.JDialog {
                     .addComponent(labelAtaqueZombie)
                     .addComponent(labelAtaqueSuperviviente))
                 .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonAtacar))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonAtacarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAtacarActionPerformed
+        //si la vida del jugador es menor o igual que cero salta el JOptionPane y cuando se cierra acaba la ejecucion del programa
         if (juego.getSuperviviente().getVida() <= 0) {
-         JOptionPane.showMessageDialog(this, "HAS PERDIDO :(");
+            JOptionPane.showMessageDialog(this, "HAS PERDIDO :(");
             System.exit(0);
-
-        } else if (juego.getHabitacion().getZombies().isEmpty()) {
-            this.setVisible(false);
-        } else {
-            TextAreaCombate.append("\n" + juego.Combate());
         }
 
+        //si has matado un zombie aunque queden en la sala se cierra la pantalla y para de jecutarse el metodo
+        if (zombieMuerto) {
+            this.setVisible(false);
+            return;
+        }
+
+        //se imprime el resultado de la pelea que es lo devuelto por combate y se modifican los labels 
+        TextAreaCombate.append("RONDA " + ronda + "\n" + juego.Combate());
+        mostrarAtributos();
+
+        //si el zombie tiene el valor vida menor o igual a 0 
+        if (((Zombie) juego.getHabitacion().getZombies().getFirst()).getVida() <= 0) {
+            //se inprime este mensaje , se borra el zombie y se modifica el atributo zombieMuerto
+            TextAreaCombate.append("HAS MATADO AL ZOMBIE \n");
+            juego.getHabitacion().getZombies().remove(0);
+
+            zombieMuerto = true;
+        }
+
+        ronda++;
     }//GEN-LAST:event_buttonAtacarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Habitacion {
 
-    ArrayList zombies = new ArrayList();
+    ArrayList<Zombie> zombies = new ArrayList();
     int numHabitacion;
     int numIntentosRest;
 
@@ -12,15 +12,14 @@ public class Habitacion {
         zombies.add(new Zombie(numHabitacion));
         this.numHabitacion = numHabitacion;
         numIntentosRest = 3;
-
     }
 
     public String Buscar(Superviviente superviviente) {
         numIntentosRest--;
         int numAl = (int) (Math.random() * 100 + 1);
 
+        //EL USUARIO HA HECHO RUIDO SE GENERA OTRO NUMERO
         if (numAl <= 75) {
-            //EL USUARIO HA HECHO RUIDO SE GENERA OTRO NUMERO
             numAl = (int) (Math.random() * 100 + 1);
 
             if (numAl > 40 && numAl <= 80) {
@@ -31,16 +30,20 @@ public class Habitacion {
                 return "HAS HECHO RUIDO HAS ATRAIDO A DOS ZOMBIE";
             }
 
+            //EL USUARIO HA HECHO RUIDO SE GENERA OTRO NUMERO
         } else if (numAl > 75 && numAl <= 90) {
             superviviente.botiquin = true;
-             return "HAS ENCONTADO UN BOTIQUIN";
+            return "HAS ENCONTADO UN BOTIQUIN";
+            
         } else if (numAl > 90 && numAl <= 95) {
             superviviente.num_protecion++;
             return "HAS ENCONTADO UNA PROTECCION";
+
         } else if (numAl > 95 && numAl <= 100) {
             superviviente.num_armas++;
             return "HAS ENCONTADO UNA ARMA";
-        }
+
+        }      
         return "NO HAS ENCONTADO NADA";
     }
 

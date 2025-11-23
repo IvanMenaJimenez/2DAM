@@ -1,40 +1,31 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package Interfaz;
 
+import java.awt.Frame;
 import java.awt.Image;
+import javax.swing.JOptionPane;
 import mansion_zombie.Habitacion;
 import mansion_zombie.Juego;
 import mansion_zombie.Superviviente;
 
-/**
- *
- * @author ivan.menjim
- */
 public class Accion extends javax.swing.JDialog {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Accion.class.getName());
-    java.awt.Frame parent;
+    Frame parent;
     Juego juego;
 
-   
     public Accion(java.awt.Frame parent, boolean modal, Juego juego) {
-        
-
+        //guardamos los atributos que se le pasan al JDialog
         super(parent, modal);
         this.juego = juego;
         this.parent = parent;
-        
-        
-        Image fondo = Mansion_Zombie_Inicio.FondoUtil.cargarImagen("/Interfaz/img/fondo_Accion.png", "D:\\ruta_absoluta\\fondo_inicio.png");
-        setContentPane(new Mansion_Zombie_Inicio.FondoUtil.FondoPanel(fondo));
+
+        // Cargar imagen de fondo del menú principal
+        Image fondo = Mansion_Zombie_Inicio.Fondo.cargarImagen("/Interfaz/img/fondo_Accion.png");
+        setContentPane(new Mansion_Zombie_Inicio.Fondo.FondoPanel(fondo));
+
+        //iniciamos los componentes y actualizamos los labels
         initComponents();
-
-        mostrarAccionesDisponibles();
-        mostrarAtributosJugador();
-
+        actulizarParametros();
     }
 
     public void actulizarParametros() {
@@ -43,46 +34,30 @@ public class Accion extends javax.swing.JDialog {
     }
 
     public void mostrarAccionesDisponibles() {
-        ButtonAvanza.setEnabled(true);
-        ButtonBuscar.setEnabled(true);
-        ButtonCurarse.setEnabled(true);
-        ButtonLuchar.setEnabled(true);
+        //variables para saber si se cumplen las condiciones
+        boolean noHayZombies = juego.getHabitacion().getZombies().isEmpty();
+        boolean tieneBotiquin = juego.getSuperviviente().isBotiquin();
+        boolean puedeBuscar = juego.getHabitacion().getNumIntentosRest() > 0;
 
-        if (juego.getHabitacion().getZombies().isEmpty()) {
-            ButtonLuchar.setEnabled(false);
-
-            if (juego.getSuperviviente().isBotiquin() == false) {
-                ButtonCurarse.setEnabled(false);
-            }
-
-            if (juego.getHabitacion().getNumIntentosRest() == 0) {
-                ButtonBuscar.setEnabled(false);
-            }
-
-        } else {
-            ButtonAvanza.setEnabled(false);
-            ButtonBuscar.setEnabled(false);
-            ButtonCurarse.setEnabled(false);
-
-        }
+        //activamos o desactivamos los botones con las variables
+        ButtonLuchar.setEnabled(!noHayZombies);
+        ButtonAvanza.setEnabled(noHayZombies);
+        ButtonBuscar.setEnabled(noHayZombies && puedeBuscar);
+        ButtonCurarse.setEnabled(noHayZombies && tieneBotiquin);
     }
 
     public void mostrarAtributosJugador() {
-        labelVida.setText(Integer.toString(juego.getSuperviviente().getVida()));
+        //cambiamos los labels relacionado con el superviviente
+        labelVida.setText("" + juego.getSuperviviente().getVida());
+        labelProtecciones.setText("" + juego.getSuperviviente().getNum_protecion());
+        labelArmas.setText("" + juego.getSuperviviente().getNum_armas());
+        labelBotiquin.setText(juego.getSuperviviente().isBotiquin() ? "Sí" : "No");
 
-        labelProtecciones.setText(Integer.toString(juego.getSuperviviente().getNum_protecion()));
-
-        labelArmas.setText(Integer.toString(juego.getSuperviviente().getNum_armas()));
-
-        labelBotiquin.setText(Boolean.toString(juego.getSuperviviente().isBotiquin()));
-
-        labelBusqueda.setText(Integer.toString(juego.getHabitacion().getNumIntentosRest()));
-
-        jLabel7.setText("Habitacion {Max " + juego.getHabitacionMax() + "}");
-
-        labelHabitacion.setText(Integer.toString(juego.getHabitacionActual()));
-
-        labelZombies.setText(Integer.toString(juego.getHabitacion().getZombies().size()));
+        //cambiamos los labels relacionado con las habitaciones        
+        labelBusqueda.setText("" + juego.getHabitacion().getNumIntentosRest());
+        jLabel7.setText("Habitación {Max " + juego.getHabitacionMax() + "}");
+        labelHabitacion.setText("" + juego.getHabitacionActual());
+        labelZombies.setText("" + juego.getHabitacion().getZombies().size());
     }
 
     @SuppressWarnings("unchecked")
@@ -273,68 +248,35 @@ public class Accion extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ButtonLucharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonLucharActionPerformed
+        // Abre la ventana pacciones del juego pasandole el Jframe padre y el objeto juego
         Combate combate = new Combate(parent, true, juego);
         combate.setVisible(true);
         actulizarParametros();
     }//GEN-LAST:event_ButtonLucharActionPerformed
 
     private void ButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonBuscarActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this, juego.getHabitacion().Buscar(juego.getSuperviviente()));
+        JOptionPane.showMessageDialog(this, juego.getHabitacion().Buscar(juego.getSuperviviente()));
         actulizarParametros();
     }//GEN-LAST:event_ButtonBuscarActionPerformed
 
+
     private void ButtonCurarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCurarseActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this, "TE HAS CURADO " + Integer.toString(juego.getSuperviviente().UsarBotiquin()));
+        JOptionPane.showMessageDialog(this, "TE HAS CURADO " + Integer.toString(juego.getSuperviviente().UsarBotiquin()));
         actulizarParametros();
     }//GEN-LAST:event_ButtonCurarseActionPerformed
 
     private void ButtonAvanzaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAvanzaActionPerformed
-        if (juego.getHabitacionActual() > juego.getHabitacionMax()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "HAS SOBREVIVIDO");
-            System.exit(0);
-        } else {
+        //compravamos si la habitacion actual no sobrepasa la maxima 
+        //se llama al etodo avanzar que crea una nueva habitacion y se suma uno a la habitacion actual
+        if (juego.getHabitacionActual() < juego.getHabitacionMax()) {
             juego.avanzar();
-            javax.swing.JOptionPane.showMessageDialog(this, "HAS AVANZADO A LA SALA " + juego.getHabitacionActual());
+            JOptionPane.showMessageDialog(this, "HAS AVANZADO A LA SALA " + juego.getHabitacionActual());
             actulizarParametros();
+        } else {
+            JOptionPane.showMessageDialog(this, "HAS SOBREVIVIDO");
+            System.exit(0);
         }
     }//GEN-LAST:event_ButtonAvanzaActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-//            logger.log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the dialog */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                Accion dialog = new Accion(new javax.swing.JFrame(), true , juego);
-//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-//                    @Override
-//                    public void windowClosing(java.awt.event.WindowEvent e) {
-//                        System.exit(0);
-//                    }
-//                });
-//                dialog.setVisible(true);
-//            }
-//        });
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtonAvanza;

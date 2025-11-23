@@ -13,7 +13,7 @@ public class Juego {
     Superviviente superviviente = new Superviviente();
     public Habitacion habitacion;
     int habitacionActual = 0;
-    int habitacionMax;
+    int habitacionMax ;
 
     public void ElegirDificultad(String eleccion) {
         switch (eleccion) {
@@ -33,9 +33,7 @@ public class Juego {
 
     public void avanzar() {
         habitacionActual++;
-        if (habitacionActual < habitacionMax) {
-            habitacion = new Habitacion(habitacionActual);
-        }
+        habitacion = new Habitacion(habitacionActual);
     }
 
     public void iniciarJuego(String dificultad) {
@@ -51,17 +49,24 @@ public class Juego {
 
         dañoSuperviviente = ((int) (Math.random() * (superviviente.ataque + 1))) + superviviente.num_armas;
         zombie.vida -= dañoSuperviviente;
+        if (zombie.vida < 0) {
+            zombie.vida = 0;
+        }
+
         resultado += ("HAS HECHO" + dañoSuperviviente + " DE DAÑO \n");
 
         if (zombie.vida > 0) {
             dañoZombie = ((int) (Math.random() * (zombie.ataque + 1))) - superviviente.num_protecion;
-            superviviente.vida -= dañoZombie;
-            resultado += ("TE HAN HECHO " + dañoZombie + " DE DAÑO \n");
-        } else {
-            habitacion.zombies.remove(0);
-            resultado += ("HAS MATADO AL ZOMBIE");
+            if (dañoZombie < 0) {
+                dañoZombie = 0;
+            }
+            superviviente.vida -= dañoZombie;           
+           
+            if (superviviente.vida < 0) {
+                superviviente.vida = 0;
+            }
+            resultado += "TE HAN HECHO " + dañoZombie + " DE DAÑO\n";
         }
-
         return resultado;
     }
 

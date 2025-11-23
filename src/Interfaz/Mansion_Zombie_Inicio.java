@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Interfaz;
 
 import java.awt.Graphics;
@@ -11,21 +7,19 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import mansion_zombie.Habitacion;
 import mansion_zombie.Juego;
-import mansion_zombie.Main;
 import mansion_zombie.Superviviente;
 
 public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Mansion_Zombie_Inicio.class.getName());
     Juego juego = new Juego();
-   
 
     public Mansion_Zombie_Inicio() {
-        Image fondo = FondoUtil.cargarImagen("/Interfaz/img/fondo_inicio.png","D:\\ruta_absoluta\\fondo_inicio.png");
-        setContentPane(new FondoUtil.FondoPanel(fondo));
+        // Cargar imagen de fondo del menú principal
+        Image fondo = Fondo.cargarImagen("/Interfaz/img/fondo_inicio.png");
+        setContentPane(new Fondo.FondoPanel(fondo));
         
         initComponents();
-
     }
 
     @SuppressWarnings("unchecked")
@@ -65,35 +59,42 @@ public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(198, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(ButtonJugar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ButtonCargarPartida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ButtonVerHistorial, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(75, 75, 75)
-                .addComponent(ComboBoxSeleccionarDificultad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48))
+                .addGap(33, 33, 33)
+                .addComponent(ButtonJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53)
+                .addComponent(ButtonVerHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ComboBoxSeleccionarDificultad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(48, 48, 48))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ButtonCargarPartida)
+                        .addGap(37, 37, 37))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(111, 111, 111)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(241, Short.MAX_VALUE)
+                .addComponent(ComboBoxSeleccionarDificultad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ButtonJugar)
-                    .addComponent(ComboBoxSeleccionarDificultad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(42, 42, 42)
-                .addComponent(ButtonCargarPartida)
-                .addGap(46, 46, 46)
-                .addComponent(ButtonVerHistorial)
-                .addContainerGap(90, Short.MAX_VALUE))
+                    .addComponent(ButtonVerHistorial)
+                    .addComponent(ButtonCargarPartida))
+                .addGap(46, 46, 46))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void ButtonJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonJugarActionPerformed
-
+        // Inicia el juego con la dificultad elegida
         juego.iniciarJuego((String) this.ComboBoxSeleccionarDificultad.getSelectedItem());
+        
+        // Abre la ventana pacciones del juego pasandole el Jframe
         Accion accion = new Accion(this, true, juego);
         accion.setVisible(true);
     }//GEN-LAST:event_ButtonJugarActionPerformed
@@ -102,38 +103,34 @@ public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
 
     }//GEN-LAST:event_ComboBoxSeleccionarDificultadActionPerformed
 
-    public class FondoUtil {
-
-        public static Image cargarImagen(String rutaInterna, String rutaAbsoluta) {
+    public class Fondo {
+        
+        // Carga una imagen desde el proyecto
+        public static Image cargarImagen(String rutaInterna) {
             try {
-                return new ImageIcon(
-                        FondoUtil.class.getResource(rutaInterna)
-                ).getImage();
+                return new ImageIcon(Fondo.class.getResource(rutaInterna)).getImage();
             } catch (Exception e) {
-                return new ImageIcon(rutaAbsoluta).getImage();
+                System.out.println(e.getMessage());
+                return null;
             }
         }
-
+        
+        // Panel personalizado que dibuja la imagen de fondo
         public static class FondoPanel extends JPanel {
-
             private Image imagen;
 
             public FondoPanel(Image imagen) {
                 this.imagen = imagen;
             }
-
+            
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
             }
         }
-
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
