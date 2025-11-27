@@ -1,8 +1,9 @@
 package mansion_zombie;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Zombie {
+public class Zombie implements Serializable{
 
     int vida;
     int ataque;

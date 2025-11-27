@@ -4,16 +4,18 @@
  */
 package mansion_zombie;
 
+import java.io.Serializable;
+
 /**
  *
  * @author ivan.menjim
  */
-public class Juego {
+public class Juego implements Serializable{
 
     Superviviente superviviente = new Superviviente();
     public Habitacion habitacion;
     int habitacionActual = 0;
-    int habitacionMax ;
+    int habitacionMax;
 
     public void ElegirDificultad(String eleccion) {
         switch (eleccion) {
@@ -47,21 +49,21 @@ public class Juego {
         int dañoSuperviviente;
         Zombie zombie = (Zombie) habitacion.zombies.get(0);
 
-        dañoSuperviviente = ((int) (Math.random() * (superviviente.ataque + 1))) + superviviente.num_armas;
+        dañoSuperviviente = (((int) (Math.random() * (superviviente.ataque + 1))) + superviviente.num_armas)+1;
         zombie.vida -= dañoSuperviviente;
         if (zombie.vida < 0) {
             zombie.vida = 0;
         }
 
-        resultado += ("HAS HECHO" + dañoSuperviviente + " DE DAÑO \n");
+        resultado += ("HAS HECHO " + dañoSuperviviente + " DE DAÑO \n");
 
         if (zombie.vida > 0) {
-            dañoZombie = ((int) (Math.random() * (zombie.ataque + 1))) - superviviente.num_protecion;
+            dañoZombie = (((int) (Math.random() * (zombie.ataque + 1))) - superviviente.num_protecion) + 1;
             if (dañoZombie < 0) {
                 dañoZombie = 0;
             }
-            superviviente.vida -= dañoZombie;           
-           
+            superviviente.vida -= dañoZombie;
+
             if (superviviente.vida < 0) {
                 superviviente.vida = 0;
             }

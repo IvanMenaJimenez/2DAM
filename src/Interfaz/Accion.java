@@ -2,6 +2,13 @@ package Interfaz;
 
 import java.awt.Frame;
 import java.awt.Image;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import javax.swing.JOptionPane;
 import mansion_zombie.Habitacion;
 import mansion_zombie.Juego;
@@ -60,6 +67,22 @@ public class Accion extends javax.swing.JDialog {
         labelZombies.setText("" + juego.getHabitacion().getZombies().size());
     }
 
+    public void guardarHistorial() {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter("Historial.txt", true))) {
+            out.write("VICTORIA;");
+            out.write(juego.getHabitacionMax() + ";");
+            out.write(juego.getHabitacionActual() + ";");
+            out.write(juego.getSuperviviente().getVida() + ";");
+            out.write(juego.getSuperviviente().isBotiquin() ? "Sí" : "No" + ";");
+            out.write(juego.getSuperviviente().getNum_armas() + ";");
+            out.write(juego.getSuperviviente().getNum_protecion());
+            out.newLine();           
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -249,7 +272,7 @@ public class Accion extends javax.swing.JDialog {
 
     private void ButtonLucharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonLucharActionPerformed
         // Abre la ventana pacciones del juego pasandole el Jframe padre y el objeto juego
-        Combate combate = new Combate(parent, true, juego);
+        Combate combate = new Combate(parent, true, juego, this);
         combate.setVisible(true);
         actulizarParametros();
     }//GEN-LAST:event_ButtonLucharActionPerformed
@@ -273,8 +296,9 @@ public class Accion extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "HAS AVANZADO A LA SALA " + juego.getHabitacionActual());
             actulizarParametros();
         } else {
+            guardarHistorial();
             JOptionPane.showMessageDialog(this, "HAS SOBREVIVIDO");
-            System.exit(0);
+            this.setVisible(false);
         }
     }//GEN-LAST:event_ButtonAvanzaActionPerformed
 

@@ -1,6 +1,8 @@
 package mansion_zombie;
 
-public class Superviviente {
+import java.io.Serializable;
+
+public class Superviviente implements Serializable{
 
     final int maxvida;
     int vida;

@@ -1,8 +1,9 @@
 package mansion_zombie;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Habitacion {
+public class Habitacion implements Serializable{
 
     ArrayList<Zombie> zombies = new ArrayList();
     int numHabitacion;

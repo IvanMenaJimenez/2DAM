@@ -35,12 +35,10 @@
               <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="ComboBoxSeleccionarDificultad" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="49" max="32767" attributes="0"/>
                       <Component id="ButtonCargarPartida" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                   </Group>
@@ -77,12 +75,18 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Cargar Partida"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ButtonCargarPartidaActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="ButtonVerHistorial">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ver Historico"/>
         <Property name="name" type="java.lang.String" value="Ver historico" noResource="true"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ButtonVerHistorialActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="ComboBoxSeleccionarDificultad">
       <Properties>

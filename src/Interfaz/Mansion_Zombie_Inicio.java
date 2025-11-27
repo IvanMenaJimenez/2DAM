@@ -2,8 +2,11 @@ package Interfaz;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import mansion_zombie.Habitacion;
 import mansion_zombie.Juego;
@@ -11,14 +14,15 @@ import mansion_zombie.Superviviente;
 
 public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
 
+    Juego juego;
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Mansion_Zombie_Inicio.class.getName());
-    Juego juego = new Juego();
 
     public Mansion_Zombie_Inicio() {
         // Cargar imagen de fondo del menú principal
         Image fondo = Fondo.cargarImagen("/Interfaz/img/fondo_inicio.png");
         setContentPane(new Fondo.FondoPanel(fondo));
-        
+
         initComponents();
     }
 
@@ -43,9 +47,19 @@ public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
         });
 
         ButtonCargarPartida.setText("Cargar Partida");
+        ButtonCargarPartida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonCargarPartidaActionPerformed(evt);
+            }
+        });
 
         ButtonVerHistorial.setText("Ver Historico");
         ButtonVerHistorial.setName("Ver historico"); // NOI18N
+        ButtonVerHistorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonVerHistorialActionPerformed(evt);
+            }
+        });
 
         ComboBoxSeleccionarDificultad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Facil", "Normal", "Dificil" }));
         ComboBoxSeleccionarDificultad.addActionListener(new java.awt.event.ActionListener() {
@@ -66,11 +80,9 @@ public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
                 .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(ComboBoxSeleccionarDificultad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(48, 48, 48))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(ButtonCargarPartida)
                         .addGap(37, 37, 37))))
         );
@@ -91,9 +103,14 @@ public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ButtonJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonJugarActionPerformed
-        // Inicia el juego con la dificultad elegida
-        juego.iniciarJuego((String) this.ComboBoxSeleccionarDificultad.getSelectedItem());
-        
+
+        if (juego == null) {
+            juego = new Juego();
+
+            // Inicia el juego con la dificultad elegida
+            juego.iniciarJuego((String) this.ComboBoxSeleccionarDificultad.getSelectedItem());
+        }
+
         // Abre la ventana pacciones del juego pasandole el Jframe
         Accion accion = new Accion(this, true, juego);
         accion.setVisible(true);
@@ -103,8 +120,23 @@ public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
 
     }//GEN-LAST:event_ComboBoxSeleccionarDificultadActionPerformed
 
-    public class Fondo {
+    private void ButtonCargarPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCargarPartidaActionPerformed
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("PartidaGuardada"))) {
+            juego = (Juego) ois.readObject();
+            JOptionPane.showMessageDialog(this, "PARTIDA CARGADA");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "NO EXISTEN DATOS GUARDADOS");
+        }
+    }//GEN-LAST:event_ButtonCargarPartidaActionPerformed
+
+    private void ButtonVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonVerHistorialActionPerformed
+        Historico historico = new Historico(this, true, juego);
+        historico.setVisible(true);
         
+    }//GEN-LAST:event_ButtonVerHistorialActionPerformed
+
+    public class Fondo {
+
         // Carga una imagen desde el proyecto
         public static Image cargarImagen(String rutaInterna) {
             try {
@@ -114,15 +146,16 @@ public class Mansion_Zombie_Inicio extends javax.swing.JFrame {
                 return null;
             }
         }
-        
+
         // Panel personalizado que dibuja la imagen de fondo
         public static class FondoPanel extends JPanel {
+
             private Image imagen;
 
             public FondoPanel(Image imagen) {
                 this.imagen = imagen;
             }
-            
+
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);

@@ -1,20 +1,28 @@
 package Interfaz;
 
+import java.awt.Frame;
 import java.awt.Image;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 import mansion_zombie.*;
 
 public class Combate extends javax.swing.JDialog {
-
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Combate.class.getName());
     private Juego juego;
     private int ronda = 1;
     private boolean zombieMuerto = false;
-
-    public Combate(java.awt.Frame parent, boolean modal, Juego juego) {
+    Accion aThis;
+    
+    public Combate(Frame parent, boolean modal, Juego juego, Accion aThis) {
         //guardamos los atributos que se le pasan al JDialog 
         super(parent, modal);
         this.juego = juego;
+        this.aThis = aThis;
 
         // Cargar imagen de fondo del menú principal
         Image fondo = Mansion_Zombie_Inicio.Fondo.cargarImagen("/Interfaz/img/fondo_Combate.png");
@@ -24,7 +32,7 @@ public class Combate extends javax.swing.JDialog {
         initComponents();
         mostrarAtributos();
     }
-
+    
     public void mostrarAtributos() {
         //cambiamos los labels relacionado con el superviviente
         labelVidaSuperviviente.setText(Integer.toString(juego.getSuperviviente().getVida()));
@@ -38,9 +46,25 @@ public class Combate extends javax.swing.JDialog {
             labelVidaZombie.setText("0");
             labelAtaqueZombie.setText("0");
         }
-
+        
     }
-
+    
+    public void guardarHistorial() {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter("Historial.txt", true))) {
+            out.write("DERROTA;");
+            out.write(juego.getHabitacionMax() + ";");
+            out.write(juego.getHabitacionActual() + ";");
+            out.write(juego.getSuperviviente().getVida() + ";");
+            out.write(juego.getSuperviviente().isBotiquin() ? "Sí" : "No" + ";");
+            out.write(juego.getSuperviviente().getNum_armas() + ";");
+            out.write(juego.getSuperviviente().getNum_protecion());
+            out.newLine();           
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -61,6 +85,7 @@ public class Combate extends javax.swing.JDialog {
         buttonAtacar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         TextAreaCombate.setEditable(false);
         TextAreaCombate.setColumns(20);
@@ -169,7 +194,10 @@ public class Combate extends javax.swing.JDialog {
         //si la vida del jugador es menor o igual que cero salta el JOptionPane y cuando se cierra acaba la ejecucion del programa
         if (juego.getSuperviviente().getVida() <= 0) {
             JOptionPane.showMessageDialog(this, "HAS PERDIDO :(");
-            System.exit(0);
+            
+            this.setVisible(false);
+            aThis.setVisible(false);
+            
         }
 
         //si has matado un zombie aunque queden en la sala se cierra la pantalla y para de jecutarse el metodo
@@ -187,10 +215,10 @@ public class Combate extends javax.swing.JDialog {
             //se inprime este mensaje , se borra el zombie y se modifica el atributo zombieMuerto
             TextAreaCombate.append("HAS MATADO AL ZOMBIE \n");
             juego.getHabitacion().getZombies().remove(0);
-
+            
             zombieMuerto = true;
         }
-
+        
         ronda++;
     }//GEN-LAST:event_buttonAtacarActionPerformed
 
